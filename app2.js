@@ -1,12 +1,12 @@
-function functionAsincrona () {
+function functionAsincrona() {
     setTimeout(() => {
-        console.log('Esta es una tarea asincronica')
-    }, 3000)
+        console.log('Esta es una tarea asincrónica'); // Se imprime en la consola el mensaje después de un retraso de 3000 milisegundos
+    }, 3000);
 }
 
 function functionSincrona() {
-    console.log('Esta es una tarea sincrona')
+    console.log('Esta es una tarea sincrónica'); // Se imprime en la consola el mensaje inmediatamente
 }
 
-functionAsincrona()
-functionSincrona()
+functionAsincrona(); // Se invoca la función asincrónica
+functionSincrona(); // Se invoca la función sincrónica
