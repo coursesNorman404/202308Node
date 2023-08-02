@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 // Función para crear una nueva nota con un ID único
 const createNote = (message) => {
   return {
-    id: uuidv4(),
+    id: uuidv4(), // Genera un ID único utilizando la función uuidv4
     message,
   };
 }
@@ -14,16 +14,16 @@ const createNote = (message) => {
 // Función para leer las notas existentes
 const readNotes = () => {
   try {
-    const data = fs.readFileSync('notes.json', 'utf8');
-    return JSON.parse(data);
+    const data = fs.readFileSync('notes.json', 'utf8'); // Lee el archivo 'notes.json' y obtiene los datos
+    return JSON.parse(data); // Parsea los datos en formato JSON y los devuelve
   } catch (err) {
-    return [];
+    return []; // Si hay un error al leer el archivo, devuelve un array vacío
   }
 }
 
 // Función para escribir las notas
 const writeNotes = (notes) => {
-  fs.writeFileSync('notes.json', JSON.stringify(notes, null, 2));
+  fs.writeFileSync('notes.json', JSON.stringify(notes, null, 2)); // Escribe los datos en formato JSON en el archivo 'notes.json'
 }
 
 // Configuración de yargs para manejar argumentos de la línea de comandos
@@ -38,10 +38,10 @@ yargs(hideBin(process.argv))
       });
     },
     (argv) => {
-      const notes = readNotes();
-      const note = createNote(argv.message);
-      notes.push(note);
-      writeNotes(notes);
+      const notes = readNotes(); // Obtiene las notas existentes
+      const note = createNote(argv.message); // Crea una nueva nota con el mensaje proporcionado
+      notes.push(note); // Agrega la nota al array de notas existentes
+      writeNotes(notes); // Guarda las notas en el archivo 'notes.json'
       console.log('Nota agregada.');
     }
   )
@@ -55,9 +55,9 @@ yargs(hideBin(process.argv))
       });
     },
     (argv) => {
-      const notes = readNotes();
-      const filteredNotes = notes.filter(note => note.id !== argv.id);
-      writeNotes(filteredNotes);
+      const notes = readNotes(); // Obtiene las notas existentes
+      const filteredNotes = notes.filter(note => note.id !== argv.id); // Filtra las notas para excluir la nota con el ID proporcionado
+      writeNotes(filteredNotes); // Guarda las notas filtradas en el archivo 'notes.json'
       console.log('Nota eliminada.');
     }
   )
@@ -66,9 +66,9 @@ yargs(hideBin(process.argv))
     'Lee todas las notas',
     () => {},
     () => {
-      const notes = readNotes();
+      const notes = readNotes(); // Obtiene las notas existentes
       notes.forEach(note => {
-        console.log(`${note.id}: ${note.message}`);
+        console.log(`${note.id}: ${note.message}`); // Imprime el ID y el mensaje de cada nota
       });
     }
   )
