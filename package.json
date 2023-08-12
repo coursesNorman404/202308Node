@@ -1,0 +1,23 @@
+{
+  "name": "202308node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "init.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coursesNorman404/202308Node.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coursesNorman404/202308Node/issues"
+  },
+  "homepage": "https://github.com/coursesNorman404/202308Node#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
