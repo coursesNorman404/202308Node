@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Login User</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.3/dist/cdn.min.js"></script>
+    <style>
+      body, html {
+        height: 100%;
+      }
+      .container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" x-data="loginForm()">
+      <h1>Login User</h1>
+      <form @submit.prevent="login()">
+        <div class="row">
+          <div class="twelve columns">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Username" class="u-full-width" x-model="username">
+          </div>
+        </div>
+        <div class="row">
+          <div class="twelve columns">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Password" class="u-full-width" x-model="password">
+          </div>
+        </div>
+        <input class="button-primary" type="submit" value="Login" :disabled="!isValidated" />
+      </form>
+    </div>
+    <script>
+      function loginForm () {
+        return {
+          username: 'norman404',
+          password: '123456',
+          get isValidated () {
+            return this.username && this.password
+          },
+          login () {
+            fetch('/api/users/login', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                username: this.username,
+                password: this.password
+              })
+            })
+            .then(res => {
+              if (res.status === 200) {
+                return res.json()
+              } else {
+                throw new Error('Error en el login');
+              }
+            })
+            .then(data => {
+              console.log(data);
+            })
+            .catch(err => {
+              console.log(err);
+            })
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

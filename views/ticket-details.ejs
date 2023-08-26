@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ticket a detalle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.3/dist/cdn.min.js"></script>
+  </head>
+  <body>
+    <div x-data="{ ticket: <%= JSON.stringify(ticket) %>, estado: '<%= ticket.estado %>', comentario: '',  updateTicket: updateTicket }">
+      <a href="/tickets" class="button-primary"> Ver todos los tickets</a>
+      <h3>Titulo: <span x-text="ticket.titulo"></span></h3>
+      <h5>Descripción: <span x-text="ticket.descripcion"></span></h5>
+      <label for="estado"> Cambiar estado: </label>
+      <select class="u-full-width" id="estado" x-model="estado">
+        <option value="open">Open</option>
+        <option value="closed">Closed</option>
+      </select>
+      <label for="comentario"> Agregar Comentarios</label>
+      <input class="u-full-width" type="text" id="comentario" x-model="comentario">
+      <button @click="updateTicket" class="button-primary"> Actualizar Ticket</button>
+      <h5>Comentarios:</h5>
+      <ul>
+        <template x-for="comentario in ticket.comentarios">
+          <li>
+            <span x-text="comentario.text"></span>
+            <span x-text="new Date(comentario.fecha).toLocaleString()"></span>
+          </li>
+        </template>
+      </ul>
+    </div>
+    <script>
+      function updateTicket () {
+        fetch('/api/tickets/' + this.ticket._id, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            estado: this.estado,
+            comentario: this.comentario
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          this.ticket = data
+          this.comentario = ''
+        })
+      }
+    </script>
+  </body>
+</html>

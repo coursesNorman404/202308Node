@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Tickets</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.3/dist/cdn.min.js"></script>
+  </head>
+  <body>
+    <div x-data="{ tickets: <%= JSON.stringify(tickets) %>, showModal: false, titulo: '', descripcion: '', estado: 'open', submitForm: submitForm }">
+      <button @click="showModal = true" class="button-primary">Nuevo ticket</button>
+      <table class="u-full-width">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template x-for="ticket in tickets">
+            <tr>
+              <td x-text="ticket._id"></td>
+              <td x-text="ticket.titulo"></td>
+              <td x-text="ticket.descripcion"></td>
+              <td x-text="ticket.estado"></td>
+              <td><button @click="window.location.href = '/tickets/' + ticket._id">Ver Comentarios</button></td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+
+      <div x-show="showModal" class="modal" style="position: fixed; top: 10%; left: 10%; right: 10%; background-color: white; padding: 20px; z-index: 999; ">
+        <button @click="showModal = false" style="float: right;">&times;</button>
+        <h4>Crear Nuevo ticket</h4>
+        <form @submit.prevent="submitForm">
+          <div class="row">
+            <div class="six columns">
+              <label for="titulo">Titulo</label>
+              <input class="u-full-width" type="text" id="titulo" x-model="titulo">
+            </div>
+            <div class="six columns">
+              <label for="descripcion">Descripción</label>
+              <input class="u-full-width" type="text" id="descripcion" x-model="descripcion">
+            </div>
+          </div>
+          <div class="row">
+            <div class="six columns">
+              <label for="estado">Estado</label>
+              <select class="u-full-width" id="estado" x-model="estado">
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
+              </select>
+            </div>
+          </div>
+          <input class="button-primary" type="submit" value="Crear">
+        </form>
+      </div>
+    </div>
+    <script>
+      function submitForm () {
+        fetch('/api/tickets', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            titulo: this.titulo,
+            descripcion: this.descripcion,
+            estado: this.estado
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          this.tickets.push(data)
+          this.showModal = false
+        })
+      }
+    </script>
+  </body>
+</html>
